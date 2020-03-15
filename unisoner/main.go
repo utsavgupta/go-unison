@@ -30,7 +30,7 @@ const (
 
 package {{.PackageName}}
 
-// UnisonMigrations is the exported structure on which
+// UnisonMigrations is the exported type on which
 // migration methods are defined
 type UnisonMigrations int
 `

@@ -32,22 +32,10 @@ type unisonMigrationMetaSet struct {
 	set []unisonMigrationMeta
 }
 
-// type alias to validate the signature of apply methods
-type tMigrationFunction = func(*datastore.Transaction, string) error
-
-// validate the signature of an apply method
-func validateApplyMethodType(m *reflect.Method) error {
-	if _, ok := m.Func.Interface().(tMigrationFunction); !ok {
-		return fmt.Errorf("Unexpected signature %v for method %s, expected signature func(*datastore.Transaction, string) error", m.Type, m.Name)
-	}
-
-	return nil
-}
-
 // getLastAppliedMigrationTimeStamp returns the UNIX timestamp of the last
 // applied migration
 func getLastAppliedMigrationTimeStamp(c *datastore.Client, ns string) int64 {
-	appliedMigrationsGQL := datastore.NewQuery(UnisonMigrationMetaKind).Order("-ts").Namespace(ns).Limit(1)
+	appliedMigrationsGQL := datastore.NewQuery(UnisonMigrationMetaKind).Namespace(ns).Order("-ts").Limit(1)
 	appliedMigrations := []unisonMigrationMeta{}
 
 	_, err := c.GetAll(context.Background(), appliedMigrationsGQL, &appliedMigrations)
@@ -98,11 +86,7 @@ func generateMigrationMetaSet(t reflect.Type) (*unisonMigrationMetaSet, error) {
 			return nil, err
 		}
 
-		err = validateApplyMethodType(&m)
-
-		if err != nil {
-			return nil, err
-		}
+		// TODO: validate method signature
 
 		migration := unisonMigrationMeta{Name: groups[0], Timestamp: int64(ts)}
 
