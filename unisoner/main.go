@@ -176,7 +176,7 @@ func main() {
 
 	absPkgPath := path.Join(cwd, pkgName)
 
-	err = os.Mkdir(absPkgPath, os.ModeDir)
+	err = os.Mkdir(absPkgPath, 0755)
 
 	if err != nil && !os.IsExist(err) {
 		gracefulExit(stdOut, err)
