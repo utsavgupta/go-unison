@@ -96,8 +96,11 @@ func generateMigrationMetaSet(t reflect.Type) (*unisonMigrationMetaSet, error) {
 	return migrationMetaSet, nil
 }
 
-// RunMigrations ???
+// RunMigrations migrates a migration set to Google Datastore under the given namspace.
+// Use the unisoner cmd line tool to generate new migration scripts.
 func RunMigrations(c *datastore.Client, ns string, migratable interface{}) {
+
+	fmt.Println("Running Unison")
 
 	// Get the timestamp of the last applied migration
 	lastAppliedMigrationTS := getLastAppliedMigrationTimeStamp(c, ns)
@@ -129,7 +132,16 @@ func RunMigrations(c *datastore.Client, ns string, migratable interface{}) {
 		rtx := reflect.ValueOf(tx)
 		rns := reflect.ValueOf(ns)
 
-		method.Call([]reflect.Value{rtx, rns})
+		values := method.Call([]reflect.Value{rtx, rns})
+
+		value := values[0]
+
+		if !value.IsNil() {
+			e, _ := value.Interface().(error)
+
+			fmt.Printf("Failed. Cause: %s\n", e.Error())
+			continue
+		}
 
 		txkey := &datastore.Key{Kind: UnisonMigrationMetaKind, Name: migration.Name, Namespace: ns}
 		migration.AppliedAt = time.Now()

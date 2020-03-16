@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	namespace = "demo"
+	namespace = "unison-demo"
 )
 
 func main() {

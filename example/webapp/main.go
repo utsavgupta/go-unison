@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	namespace = "demo"
+	namespace = "unison-demo"
 )
 
 func writeResponse(statusCode int, body interface{}, resp http.ResponseWriter) {
