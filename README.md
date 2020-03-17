@@ -49,4 +49,4 @@ If you run `curl http://localhost:8080/artists` again, you should be presented w
 
 ### Contribute
 
-The project is in it's early stages. Contributions in terms of bug reports, documentation, and testing are welcome. Do not hesitate to report issues or raise pull requests.
+The project is in it's early stages. Contributions in terms of bug reports, documentation, and testing are welcome. Do not hesitate to report issues or to raise pull requests.

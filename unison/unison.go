@@ -140,7 +140,7 @@ func RunMigrations(c *datastore.Client, ns string, migratable interface{}) {
 			e, _ := value.Interface().(error)
 
 			fmt.Printf("Failed. Cause: %s\n", e.Error())
-			continue
+			return
 		}
 
 		txkey := &datastore.Key{Kind: UnisonMigrationMetaKind, Name: migration.Name, Namespace: ns}
